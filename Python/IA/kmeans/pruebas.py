@@ -53,7 +53,6 @@ def assign_centroid(data, centroids):
     k = centroids.shape[0]
 
 
-    for observation in range(n_observations):
 
         # Calculate the errror
         errors = np.array([])
