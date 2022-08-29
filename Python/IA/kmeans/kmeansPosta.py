@@ -1,6 +1,7 @@
 import math
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 
@@ -34,22 +35,32 @@ def dist_euclidea_arr_v2(arr, x2):
     
     return dista#np.array(dista)
 
-def recalcula_centros(labels,arr,n):
-    proms = [0 for i in range(60)]
-    conts = [0 for i in range(60)]
-    print(labels)
+def recalcula_centros(labels,arr_puntos,n,k):
+    proms = [0 for i in range(3)]
+    conts = [0 for i in range(3)]
+
     
-    print(arr)
+    print("DATOS")
+
+    print(arr_puntos)
+    
+
+
+    
     for i in range(n):
-        proms[labels[i]] += arr[labels[i]][i]
+        proms[labels[i]] += arr_puntos.iloc[i]#labels[i]][i]
         conts[labels[i]] += 1 #contador
 
+    print("PROMEDIOS")
+    print(proms)
     resultado = []
-    for i in range(n):
-        if(conts[i]==0):
-            resultado.append(proms[i]/1)
-        else:
-            resultado.append(proms[i]/conts[i])
+    for i in range(k):
+        #if(conts[i]==0):
+         #   resultado.append(proms[i]/1)
+        #else:
+        resultado.append(proms[i]/conts[i])
+    print("RESULTADO")
+    print(resultado)
         
     return resultado
 
@@ -58,28 +69,29 @@ def min(x1,x2,x3):
     arr.append(x1)
     arr.append(x2)
     arr.append(x3)
-    print(arr)
 
-    print(np.array(arr).min())
     return arr.index(np.array(arr).min())
 
 def calcula_minimos(n,distances_matrix):
     min_matrix=[]
 
-    print("MAT DISTANCIAS")
-    print(distances_matrix[0][1])
     for i in range(n):
         min_matrix.append(min(distances_matrix[0][i],distances_matrix[1][i],distances_matrix[2][i])) #me da la posicion del minimo, es decir, el cluster
-    print("minimos")
-    print(min_matrix)
+
     return min_matrix
 
 
 
 def init_clusters(data,k):
     arr = []
-    for i in range(k):
-        arr.append(data.loc[i]) #Que inicie con los k primeros datos (aleatorio y arbitrario)
+
+    arr.append(data.loc[0])
+    
+    arr.append(data.loc[10])
+
+    arr.append(data.loc[20])
+    #for i in range(k):
+    #   arr.append(data.loc[i]) #Que inicie con los k primeros datos (aleatorio y arbitrario)
     return arr
         
 
@@ -94,7 +106,8 @@ def main(k):
     datos_2 = circulo(num_datos = 20,R = 10, center_x = 20, center_y = 10)
     datos_3 = circulo(num_datos = 20,R = 10, center_x = 50, center_y = 50)
     data = datos_1.append(datos_2,ignore_index=True).append(datos_3,ignore_index=True)
-    print(data)
+
+
 
     #data=readData()
     n=data.shape[0]
@@ -103,10 +116,26 @@ def main(k):
     it=0
     while(it < 20):
         labels_matrix = calcula_minimos(n,distances_matrix)
-        cluster_center = recalcula_centros(labels_matrix,distances_matrix,n)
+
+        cluster_center = recalcula_centros(labels_matrix,data,n,k)
+
         distances_matrix = init_distances(data,k,cluster_center)
+
         it += 1
+
+    colors = {0:'red', 1:'blue', 2:'green'}
+    
+    plt.scatter(datos_1['x'], datos_1['y'], c = 'b')
+    plt.scatter(datos_2['x'], datos_2['y'], c = 'r')
+    plt.scatter(datos_3['x'], datos_3['y'], c = 'g')
+
+    plt.scatter(cluster_center[0]['x'], cluster_center[0]['y'], c = 'black') #ATENCION! PARECE QUE LOS CENTROS ESTUVIERAN MAL PERO EN ESTE GRAFICO HAY OTRA ESCALA ENTONCES ME LOS PRINTEA LEJOS
+    plt.scatter(cluster_center[1]['x'], cluster_center[1]['y'], c = 'yellow')
+    plt.scatter(cluster_center[2]['x'], cluster_center[2]['y'], c = 'orange')
+    plt.show()
 
 
 
 main(3)
+
+#Aclaracion: el algoritmo funciona para 3 clusters. Esta hecho para mas clusters pero por ej en linea 79 me dio paja darle vuelta. Las inicializaciones tamb son par 3 k
