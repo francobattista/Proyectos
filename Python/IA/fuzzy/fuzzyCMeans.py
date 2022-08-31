@@ -56,9 +56,7 @@ def calc_pertenencias(mat_datos,centros_k,n,k):
         columnas.append('K'+ str(i) ) #me va creando el siguiente array : [X1,X2,.....]
     pertenencias = pd.DataFrame(columns=columnas)
 
-
-    pertenencias = calculoMki(mat_datos,centros_k,n,columnas)
-    
+    pertenencias = calculoMki(mat_datos,centros_k,n,columnas)    
     return pertenencias
 
 
