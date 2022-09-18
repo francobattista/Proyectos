@@ -94,7 +94,7 @@ funcYMedia = fuzz.trapmf(eY,[1.46,2.46,5,7])
 funcYAlta = fuzz.trapmf(eY,[5,7,13,15])
 
 #-------------------------------
-entradaX = np.array([-8]) #,-5,5,8 ENTRADA!
+entradaX = np.array([-8]) #-8,-5,5,8 ENTRADA!
 #-----------------------------
 
 #Valores de verdad de las funciones de membresia de entrada, para alta, baja y media, EN LOS PUNTOS DE "entradaX"
